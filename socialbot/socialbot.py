@@ -3,7 +3,7 @@ from cleverbot import Cleverbot
 import settings
 
 
-class Bot:
+class Bot():
     def __init__(self):
         self.slack = Slacker(settings.SECRET_KEY)
 

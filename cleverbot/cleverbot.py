@@ -10,7 +10,7 @@ import urllib.request
 import urllib.parse
 
 
-class Cleverbot:
+class Cleverbot():
     """
     Wrapper over the Cleverbot API.
     """

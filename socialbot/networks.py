@@ -1,11 +1,21 @@
-class SocialNetwork:
+import abc
+
+
+class SocialNetwork():
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
+    def post(self):
+        """
+        :return:
+        """
+
+
+class Facebook(SocialNetwork):
     def post(self):
         pass
 
 
-class Facebook(SocialNetwork):
-    pass
-
-
 class Twitter(SocialNetwork):
-    pass
+    def post(self):
+        pass
