@@ -1,7 +1,6 @@
 slacker
-flask
 requests
 python-daemon
 pyyaml
 websocket-client
-slackclient
+facepy

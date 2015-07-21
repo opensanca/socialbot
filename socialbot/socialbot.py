@@ -5,7 +5,11 @@ import settings
 
 class Bot():
     def __init__(self):
-        self.slack = Slacker(settings.SECRET_KEY)
+        self.token = settings.SECRET_KEY
+        self.connect()
+
+    def connect(self):
+        self.slack = Slacker(self.token)
 
     def discover_userid(self, username):
         users = self.slack.users.list().body['members']
