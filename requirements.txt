@@ -3,4 +3,4 @@ requests
 python-daemon
 pyyaml
 websocket-client
-facepy
+facebook-sdk

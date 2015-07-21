@@ -1,5 +1,5 @@
 import abc
-from facepy import GraphAPI
+import facebook
 import settings
 
 
@@ -17,11 +17,11 @@ class SocialNetwork():
 class Facebook(SocialNetwork):
     def post(self, message):
         self.token = settings.SOCIAL_KEYS['facebook']
-        graph = GraphAPI(oauth_token=self.token, version='2.4')
-        graph.post(
-            path='me',
-            message=message
-        )
+        graph = facebook.GraphAPI(access_token=self.token)
+        try:
+            graph.put_wall_post(message=message)
+        except:
+            print("deu ruim")
 
 
 class Twitter(SocialNetwork):
