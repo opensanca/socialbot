@@ -18,10 +18,7 @@ class Facebook(SocialNetwork):
     def post(self, message):
         self.token = settings.SOCIAL_KEYS['facebook']
         graph = facebook.GraphAPI(access_token=self.token)
-        try:
-            graph.put_wall_post(message=message)
-        except:
-            print("deu ruim")
+        graph.put_wall_post(message=message, profile_id='opensanca')
 
 
 class Twitter(SocialNetwork):
