@@ -18,9 +18,15 @@ class Bot():
         return messages
 
     def talk(self, channel, question):
-        cleverbot = Cleverbot()
-        answer = cleverbot.ask(question)
-        self.slack.chat.post_message(channel=channel, text=answer, as_user=settings.BOT_NAME)
+        bot_id = self.discover_userid(settings.BOT_NAME)
+        bot_mention = "<@" + bot_id + ">:"
+        print(bot_mention)
+        print(question)
+        if bot_mention in question:
+            print(question)
+            cleverbot = Cleverbot()
+            answer = cleverbot.ask(question)
+            self.slack.chat.post_message(channel=channel, text=answer, as_user=settings.BOT_NAME)
 
     def share(self, channel):
         for message in self.read(channel):

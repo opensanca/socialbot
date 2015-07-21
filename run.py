@@ -7,4 +7,7 @@ slack = Slacker(settings.SECRET_KEY)
 
 bot = Bot()
 
-print(bot.discover_userid('lucasmarques'))
+messages = bot.read(settings.CHANNELS_IDS['#random'])
+
+for message in messages:
+    bot.talk(settings.CHANNELS_IDS['#random'], message['text'])
