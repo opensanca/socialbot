@@ -38,17 +38,19 @@ class SocialBot():
         if str(channel) in self.history:
             if self.history[str(channel)] != self.messages:
                 for message in self.messages:
-                    if frozenset(message) not in self.history[str(channel)]:
-                        print(message['text'])
-                        if bot_mention in message['text']:
-                            print('Talking')
+                    if dict(message) not in self.history[str(channel)]:
+                        text = ''
+                        try:
+                            text = message['text']
+                        except:
+                            print('Invalid message')
+                        if bot_mention in text:
                             self.talk(channel, message)
-                        if settings.SHARE_TRIGGER in message['text']:
-                            print('Sharing')
+                        if settings.SHARE_TRIGGER in text:
                             self.share(channel, message['text'])
                 self.history[str(channel)] = self.messages
         else:
-            self.history[str(channel)] = {}
+            self.history[str(channel)] = []
             self.listen(channel)
 
     def talk(self, channel, question):
