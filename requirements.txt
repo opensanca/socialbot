@@ -3,5 +3,5 @@ requests
 python-daemon
 pyyaml
 websocket-client
-facebook-sdk
+git+https://github.com/pythonforfacebook/facebook-sdk
 tweepy

@@ -1,17 +1,13 @@
-from slacker import Slacker
+import time
+from socialbot.socialbot import SocialBot
 
-import settings
-from socialbot.networks import Facebook, Twitter
-from socialbot.socialbot import Bot
-
-slack = Slacker(settings.SECRET_KEY)
-
-bot = Bot()
-
-messages = bot.read(settings.CHANNELS_IDS['#random'])
-
-# for message in messages:
-#    bot.talk(settings.CHANNELS_IDS['#random'], message)
-# print(bot.read(settings.CHANNELS_IDS['#random']))
-facebook = Facebook()
-facebook.post("Testing facebook developer API via Python console")
+if __name__ == '__main__':
+    bot = SocialBot()
+    while True:
+        try:
+            for channel in bot.channels():
+                bot.listen(channel['id'])
+        except Exception as ex:
+            print(ex)
+            bot = SocialBot()
+            time.sleep(1)
