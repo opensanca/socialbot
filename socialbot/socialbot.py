@@ -1,6 +1,7 @@
 from slacker import Slacker
 from cleverbot import Cleverbot
 import settings
+from socialbot.networks import Facebook, Twitter
 
 
 class Bot():
@@ -10,6 +11,8 @@ class Bot():
 
     def connect(self):
         self.slack = Slacker(self.token)
+        self.facebook = Facebook()
+        self.twitter = Twitter()
 
     def discover_userid(self, username):
         users = self.slack.users.list().body['members']
@@ -42,4 +45,5 @@ class Bot():
     def share(self, channel):
         for message in self.read(channel):
             if settings.SHARE_TRIGGER in message:
-                pass
+                self.facebook.post(message)
+                self.twitter.post(message)

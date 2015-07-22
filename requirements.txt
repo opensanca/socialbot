@@ -4,3 +4,4 @@ python-daemon
 pyyaml
 websocket-client
 facebook-sdk
+tweepy

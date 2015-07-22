@@ -1,7 +1,7 @@
 from slacker import Slacker
 
 import settings
-from socialbot.networks import Facebook
+from socialbot.networks import Facebook, Twitter
 from socialbot.socialbot import Bot
 
 slack = Slacker(settings.SECRET_KEY)

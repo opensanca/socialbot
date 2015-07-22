@@ -1,6 +1,7 @@
 import abc
 import facebook
-import settings
+import tweepy
+from settings import *
 
 
 class SocialNetwork():
@@ -16,11 +17,15 @@ class SocialNetwork():
 
 class Facebook(SocialNetwork):
     def post(self, message):
-        self.token = settings.TOKENS['facebook']
-        graph = facebook.GraphAPI(access_token=self.token)
+        graph = facebook.GraphAPI(access_token=FACEBOOK['token'])
         graph.put_wall_post(message=message)
 
 
 class Twitter(SocialNetwork):
     def post(self, message):
-        pass
+        self.auth = tweepy.OAuthHandler(TWITTER['consumer_key'], TWITTER['consumer_secret'])
+        self.auth.set_access_token(TWITTER['access_token'], TWITTER['access_token_secret'])
+
+        self.api = tweepy.API(self.auth)
+
+        self.api.update_status(status=message)
