@@ -16,9 +16,9 @@ class SocialNetwork():
 
 class Facebook(SocialNetwork):
     def post(self, message):
-        self.token = settings.SOCIAL_KEYS['facebook']
+        self.token = settings.TOKENS['facebook']
         graph = facebook.GraphAPI(access_token=self.token)
-        graph.put_wall_post(message=message, profile_id='opensanca')
+        graph.put_wall_post(message=message)
 
 
 class Twitter(SocialNetwork):
