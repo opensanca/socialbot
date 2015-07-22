@@ -34,7 +34,7 @@ class SocialBot():
     def listen(self, channel):
         self.messages = self.slack.channels.history(channel, count=5).body['messages']
         bot_id = self.discover_userid(settings.BOT_NAME)
-        bot_mention = "<@" + bot_id + ">:"
+        bot_mention = "<@" + bot_id + ">"
         if str(channel) in self.history:
             if self.history[str(channel)] != self.messages:
                 for message in self.messages:
@@ -45,7 +45,7 @@ class SocialBot():
                             self.talk(channel, message)
                         if settings.SHARE_TRIGGER in message['text']:
                             print('Sharing')
-                            self.share(channel, message)
+                            self.share(channel, message['text'])
                 self.history[str(channel)] = self.messages
         else:
             self.history[str(channel)] = {}
@@ -54,13 +54,14 @@ class SocialBot():
     def talk(self, channel, question):
         try:
             cleverbot = Cleverbot()
-            answer = '@' + self.discover_username(question['user']) + ': ' + cleverbot.ask(question['text'])
+            answer = '@' + self.discover_username(question['user']) + ': ' + cleverbot.ask(question)
             self.slack.chat.post_message(channel=channel, text=answer, as_user=settings.BOT_NAME)
         except Exception as ex:
             print(ex)
 
     def share(self, channel, message):
         try:
+            message = message.replace(settings.SHARE_TRIGGER, '').strip().replace('<', '').replace('>', '')
             self.facebook.post(message)
             self.twitter.post(message)
         except Exception as ex:
