@@ -45,9 +45,9 @@ class SocialBot():
                         except:
                             print('Invalid message')
                         if bot_mention in text:
-                            self.talk(channel, message['text'])
+                            self.talk(channel, message)
                         if settings.SHARE_TRIGGER in text:
-                            self.share(channel, message['text'])
+                            self.share(channel, text)
                 self.history[str(channel)] = self.messages
         else:
             self.history[str(channel)] = []
@@ -56,7 +56,7 @@ class SocialBot():
     def talk(self, channel, question):
         try:
             cleverbot = Cleverbot()
-            answer = '@' + self.discover_username(question['user']) + ': ' + cleverbot.ask(question)
+            answer = '@' + self.discover_username(question['user']) + ': ' + cleverbot.ask(question['text'])
             self.slack.chat.post_message(channel=channel, text=answer, as_user=settings.BOT_NAME)
         except Exception as ex:
             print(ex)
