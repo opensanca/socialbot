@@ -32,7 +32,7 @@ class SocialBot():
                 return user['name']
 
     def listen(self, channel):
-        self.messages = self.slack.channels.history(channel, count=5).body['messages']
+        self.messages = self.slack.channels.history(channel, count=3).body['messages']
         bot_id = self.discover_userid(settings.BOT_NAME)
         bot_mention = "<@" + bot_id + ">"
         if str(channel) in self.history:
