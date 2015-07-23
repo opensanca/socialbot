@@ -45,7 +45,7 @@ class SocialBot():
                         except:
                             print('Invalid message')
                         if bot_mention in text:
-                            self.talk(channel, message)
+                            self.talk(channel, message['text'])
                         if settings.SHARE_TRIGGER in text:
                             self.share(channel, message['text'])
                 self.history[str(channel)] = self.messages
