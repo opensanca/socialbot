@@ -5,3 +5,4 @@ pyyaml
 websocket-client
 git+https://github.com/pythonforfacebook/facebook-sdk
 tweepy
+ipython
