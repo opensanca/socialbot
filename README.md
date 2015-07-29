@@ -22,9 +22,7 @@ When you type `@share Some text: somelink.com` the bot will share your message o
 # Easter Egg
 When you mention bot in a public channel it'll answer you.
 <br>
-e.g. `@robotson: How are you?`
-<br>
-And then:
+For example:
 <br>
 <img src="http://s3.postimg.org/fm4keu8f7/robotson.png" />
 <br>
