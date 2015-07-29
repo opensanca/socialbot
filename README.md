@@ -24,6 +24,12 @@ When you mention bot in a public channel it'll answer you.
 <br>
 e.g. `@robotson: How are you?`
 <br>
+And then:
+<br>
+<img src="http://s3.postimg.org/fm4keu8f7/robotson.png" />
+<br>
+So sweet :)
+<br>
 In background we are calling <a href="http://www.cleverbot.com/" target="_blank">Cleverbot</a> to answer the question.
 
 # Licence
