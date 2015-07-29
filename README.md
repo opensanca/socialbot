@@ -1,7 +1,7 @@
 # Socialbot
 Bot written in Python 3.4 that get links from <a href="https://slack.com/" target="_blank">Slack</a> and publish on social networks.
 <br>
-More info at: https://opensanca.wordpress.com/2015/07/23/nosso-robo-mascote-robotson/
+More info at: <a href="https://opensanca.wordpress.com/2015/07/23/nosso-robo-mascote-robotson/" target="_blank">https://opensanca.wordpress.com/2015/07/23/nosso-robo-mascote-robotson/</a>
 
 # Dependencies
 `pip install -r requirements.txt`
@@ -15,9 +15,9 @@ Note: You'll need a <b><i>never expires token</i></b> to use Facebook API becaus
 `python run.py`
 
 # Share links from Slack
-Type the configured key trigger. Default is `@share`
+Type the configured key trigger. Default is `@share`.
 <br>
-When you type `@share Some text: somelink.com` the bot will share your message on Facebook and Twitter
+When you type `@share Some text: somelink.com` the bot will share your message on Facebook and Twitter.
 
 # Easter Egg
 When you mention bot in a public channel it'll answer you.
