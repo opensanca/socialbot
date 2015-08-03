@@ -10,6 +10,7 @@ class SocialBot():
         self.slack = Slacker(self.token)
         self.facebook = Facebook()
         self.twitter = Twitter()
+        self.cleverbot = Cleverbot()
         self.history = {}
 
     def channels(self):
@@ -55,8 +56,7 @@ class SocialBot():
 
     def talk(self, channel, question):
         try:
-            cleverbot = Cleverbot()
-            answer = '@' + self.discover_username(question['user']) + ': ' + cleverbot.ask(question['text'])
+            answer = '@' + self.discover_username(question['user']) + ': ' + self.cleverbot.ask(question['text'])
             self.slack.chat.post_message(channel=channel, text=answer, as_user=settings.BOT_NAME)
         except Exception as ex:
             print(ex)

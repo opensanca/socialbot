@@ -9,7 +9,9 @@ if __name__ == '__main__':
             for channel in bot.channels():
                 bot.listen(channel['id'])
         except Exception as ex:
-            error_message = "Amiguinhos, tive um problema. Podem me ajudar? Erro: %s" % ex
+            error_message = ''
+            if ex != "504 Server Error: GATEWAY_TIMEOUT":
+                error_message = "Amiguinhos, tive um problema. Podem me ajudar? Erro: %s" % ex
             bot.slack.chat.post_message(channel='#general',
                                         text=error_message,
                                         as_user=settings.BOT_NAME)
