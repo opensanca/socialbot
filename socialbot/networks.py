@@ -2,6 +2,7 @@ import abc
 import facebook
 import tweepy
 from settings import *
+from html.parser import HTMLParser
 import re
 
 
@@ -18,6 +19,8 @@ class SocialNetwork():
 
 class Facebook(SocialNetwork):
     def post(self, message):
+        h = HTMLParser()
+        message = h.unescape(message)
         url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message)
         graph = facebook.GraphAPI(FACEBOOK['token'])
         graph.put_wall_post(message=message, attachment={'link': url[0]})
@@ -26,6 +29,8 @@ class Facebook(SocialNetwork):
 
 class Twitter(SocialNetwork):
     def post(self, message):
+        h = HTMLParser()
+        message = h.unescape(message)
         url = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message)
         self.auth = tweepy.OAuthHandler(TWITTER['consumer_key'], TWITTER['consumer_secret'])
         self.auth.set_access_token(TWITTER['access_token'], TWITTER['access_token_secret'])
