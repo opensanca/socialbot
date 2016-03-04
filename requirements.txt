@@ -1,8 +1,5 @@
-slacker
-requests
-python-daemon
-pyyaml
-websocket-client
 git+https://github.com/pythonforfacebook/facebook-sdk
-tweepy
-ipython
+git+https://github.com/folz/cleverbot.py
+slackclient==0.18.0
+tweepy==3.5.0
+ipython==4.1.1

@@ -1,22 +1,21 @@
-# Keep it secret
-SECRET_KEY = ''
+import json
 
-# Social tokens
-FACEBOOK = {
-    'token': '',
-    'app_id': '',
-    'app_secret': ''
+
+def get_secret(api, secret):
+    """
+    Return
+    Args:
+        api: asd
+        secret: asd
+    return: asd
+    """
+    with open("secrets.json") as f:
+        content = f.read()
+    return json.loads(content).get(api).get(secret)
+
+
+SLACK = {
+    'token': get_secret(api='slack', secret='token')
 }
 
-TWITTER = {
-    'consumer_key': '',
-    'consumer_secret': '',
-    'access_token': '',
-    'access_token_secret': ''
-}
-
-# Bot name
-BOT_NAME = 'rsv2'
-
-# Say bot to share something
-SHARE_TRIGGER = '@share'
+SHARE_TRIGGER = "@share"
