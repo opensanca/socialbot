@@ -1,4 +1,6 @@
+import re
 import time
+import json
 import settings
 from slackclient import SlackClient
 from slackclient._client import SlackNotConnected
@@ -10,40 +12,45 @@ class Robotson():
         self.token = token
         self.slack = SlackClient(token=self.token)
         self.cleverbot = Cleverbot()
+        self.botname = settings.BOT_NAME
 
-    def _conn(self):
-        return self.slack.rtm_connect()
+    def run(self, interval):
+        if self.slack.rtm_connect():
+            while True:
+                full_message = self.slack.rtm_read()
+                if full_message:
+                    content = full_message[0]
+                    if content.get("type") == 'message':
+                        sender = self.username_as_str(content.get("user"))
+                        channel = content.get("channel")
+                        message = content.get("text")
 
-    def run(self):
-        while True:
-            message = self.listen()
-            time.sleep(1)
+                        match = re.search(r'<@(.*)>', message)
+                        bot_mention = match.group() if match else None
+
+                        if bot_mention in message:
+                            self.talk(channel, sender, message)
+                        else:
+                            pass
+                time.sleep(interval)
+        else:
+            raise SlackNotConnected
 
     def share(self):
         pass
 
-    def talk(self, message):
+    def talk(self, channel, user, message):
         try:
-            answer = '@%s: %s' % (message.get("user"), self.cleverbot.ask(message.get("text")))
-            self.slack.rtm_send_message(channel=message.get("channel"), message=answer)
+            answer = '@%s: %s' % (user, self.cleverbot.ask(message))
+            self.slack.rtm_send_message(channel=channel, message=answer)
         except Exception:
             pass
 
-    def listen(self):
-        if self._conn():
-            full_message = self.slack.rtm_read()
-            try:
-                body = full_message[0]
-                sender = body.get("user")
-                channel = body.get("channel")
-                message_content = body.get("text")
-                return {'sender': sender, 'channel': channel, 'message': message_content}
-            except Exception:
-                pass
-        else:
-            raise SlackNotConnected
+    def username_as_str(self, userid):
+        response = json.loads(self.slack.api_call('users.info', user=userid))
+        return response.get("user").get("name")
 
 
 if __name__ == '__main__':
     robotson = Robotson(token=settings.SLACK.get("token"))
-    robotson.run()
+    robotson.run(interval=1)
