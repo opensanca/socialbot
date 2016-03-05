@@ -1,10 +1,11 @@
 import re
 import time
 import json
-import settings
 from slackclient import SlackClient
 from slackclient._client import SlackNotConnected
 from cleverbot import Cleverbot
+import settings
+from socialbot.networks import Facebook, Twitter
 
 
 class Robotson():
@@ -13,6 +14,8 @@ class Robotson():
         self.slack = SlackClient(token=self.token)
         self.cleverbot = Cleverbot()
         self.botname = settings.BOT_NAME
+        self.facebook = Facebook()
+        self.twitter = Twitter()
 
     def run(self, interval):
         if self.slack.rtm_connect():
@@ -30,14 +33,20 @@ class Robotson():
 
                         if bot_mention in message:
                             self.talk(channel, sender, message)
-                        else:
-                            pass
+                        elif settings.SHARE_TRIGGER in message:
+                            self.share(message)
                 time.sleep(interval)
         else:
             raise SlackNotConnected
 
-    def share(self):
-        pass
+    def share(self, message):
+        try:
+            message = message.replace(settings.SHARE_TRIGGER, '').strip().replace('<', '').replace('>', '')
+            print(message)
+            self.facebook.post(message)
+            self.twitter.post(message)
+        except Exception:
+            pass
 
     def talk(self, channel, user, message):
         try:

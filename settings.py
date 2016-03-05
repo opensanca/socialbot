@@ -16,6 +16,19 @@ SLACK = {
     'token': get_secret(api='slack', secret='token')
 }
 
+FACEBOOK = {
+    'token': get_secret(api='facebook', secret='token'),
+    'app_id': get_secret(api='facebook', secret='app_id'),
+    'app_secret': get_secret(api='facebook', secret='app_secret')
+}
+
+TWITTER = {
+    'consumer_key': get_secret(api='twitter', secret='consumer_key'),
+    'consumer_secret': get_secret(api='twitter', secret='consumer_secret'),
+    'access_token': get_secret(api='twitter', secret='access_token'),
+    'access_token_secret': get_secret(api='twitter', secret='access_token_secret')
+}
+
 BOT_NAME = "robotson_v2"
 
 SHARE_TRIGGER = "@share"
