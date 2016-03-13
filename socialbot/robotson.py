@@ -28,12 +28,12 @@ class Robotson():
                         channel = content.get("channel")
                         message = content.get("text")
 
-                        match = re.search(r'<@(.*)>', message)
-                        bot_mention = match.group() if match else None
+                        match = re.search(r'<@[A-Z0-9]+>', message)
+                        bot_mention = match.group() if match else ""
 
-                        if bot_mention in message:
+                        if bot_mention:
                             self.talk(channel, sender, message)
-                        elif settings.SHARE_TRIGGER in message:
+                        elif settings.SHARE_TRIGGER in message.lower():
                             self.share(message)
                 time.sleep(interval)
         else:
@@ -41,10 +41,10 @@ class Robotson():
 
     def share(self, message):
         try:
-            message = message.replace(settings.SHARE_TRIGGER, '').strip().replace('<', '').replace('>', '')
+            message = message.replace(settings.SHARE_TRIGGER, '').replace(':', '').strip()
             print(message)
-            self.facebook.post(message)
-            self.twitter.post(message)
+            # self.facebook.post(message)
+            # self.twitter.post(message)
         except Exception:
             pass
 
