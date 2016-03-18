@@ -29,6 +29,13 @@ TWITTER = {
     'access_token_secret': get_secret(api='twitter', secret='access_token_secret')
 }
 
+MONGO = {
+    "url": get_secret(api='mongo', secret='url'),
+    "port": get_secret(api='mongo', secret='port'),
+    "database": get_secret(api='mongo', secret='database'),
+    "collection": get_secret(api='mongo', secret='collection')
+}
+
 BOT_NAME = "robotson_v2"
 
 SHARE_TRIGGER = "@share"

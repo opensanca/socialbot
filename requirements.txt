@@ -3,3 +3,4 @@ git+https://github.com/folz/cleverbot.py
 slackclient==0.18.0
 tweepy==3.5.0
 ipython==4.1.1
+pymongo==3.2.2
