@@ -28,13 +28,16 @@ class Robotson():
                         channel = content.get("channel")
                         message = content.get("text")
 
-                        match = re.search(r'<@[A-Z0-9]+>', message)
-                        bot_mention = match.group() if match else ""
+                        try:
+                            match = re.search(r'<@[A-Z0-9]+>', message)
+                            bot_mention = match.group() if match else ""
 
-                        if bot_mention:
-                            self.talk(channel, sender, message)
-                        elif settings.SHARE_TRIGGER in message.lower():
-                            self.share(message)
+                            if bot_mention:
+                                self.talk(channel, sender, message)
+                            elif settings.SHARE_TRIGGER in message.lower():
+                                self.share(message)
+                        except:
+                            pass
                 time.sleep(interval)
         else:
             raise SlackNotConnected
@@ -42,9 +45,8 @@ class Robotson():
     def share(self, message):
         try:
             message = message.replace(settings.SHARE_TRIGGER, '').replace(':', '').strip()
-            print(message)
             # self.facebook.post(message)
-            # self.twitter.post(message)
+            self.twitter.post(message)
         except Exception:
             pass
 
@@ -56,10 +58,22 @@ class Robotson():
             pass
 
     def username_as_str(self, userid):
-        response = json.loads(self.slack.api_call('users.info', user=userid))
-        return response.get("user").get("name")
+        try:
+            response = json.loads(self.slack.api_call('users.info', user=userid))
+            return response.get("user").get("name")
+        except:
+            return ""
 
 
 if __name__ == '__main__':
-    robotson = Robotson(token=settings.SLACK.get("token"))
-    robotson.run(interval=1)
+    def run():
+        try:
+            robotson = Robotson(token=settings.SLACK.get("token"))
+            robotson.run(interval=1)
+        except:
+            # Bot will never die
+            time.sleep(1)
+            run()
+
+
+    run()
