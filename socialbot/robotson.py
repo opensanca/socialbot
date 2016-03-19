@@ -5,7 +5,7 @@ from slackclient import SlackClient
 from slackclient._client import SlackNotConnected
 from cleverbot import Cleverbot
 import settings
-from socialbot.networks import Facebook, Twitter
+from socialbot.networks import SocialNetwork, Facebook, Twitter
 
 
 class Robotson():
@@ -16,6 +16,7 @@ class Robotson():
         self.botname = settings.BOT_NAME
         self.facebook = Facebook()
         self.twitter = Twitter()
+        self.network = SocialNetwork()
 
     def run(self, interval):
         if self.slack.rtm_connect():
@@ -44,7 +45,7 @@ class Robotson():
 
     def share(self, message):
         try:
-            match_share_trigger = re.search(r'@share[\:]', message)
+            match_share_trigger = re.search(r'%s[\:]?' % settings.SHARE_TRIGGER, message)
             message = message.replace(match_share_trigger.group(), "")
 
             match_lt_mt = re.search(r'[<]+(.*)[>]+', message)
@@ -52,8 +53,12 @@ class Robotson():
 
             message = message.strip()
 
-            self.facebook.post(message)
-            self.twitter.post(message)
+            url = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message)
+            if len(url) > 0:
+                if not self.network.already_posted(url[0]):
+                    self.facebook.post(message)
+                    self.twitter.post(message)
+                    self.network.save_message(message)
         except Exception:
             pass
 

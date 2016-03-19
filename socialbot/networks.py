@@ -28,7 +28,12 @@ class SocialNetwork():
         pass
 
     def save_message(self, message):
-        document = {'message': message.get("message"), 'url': message.get("url"), 'timestamp': time.time()}
+        url = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message)
+        document = {'message': message, 'timestamp': time.time()}
+        try:
+            document['url'] = url[0]
+        except:
+            pass
         self.collection.insert(document)
 
     def clean_message(self, message):
@@ -47,34 +52,27 @@ class SocialNetwork():
 class Facebook(SocialNetwork):
     def post(self, message):
         cleaned_message = self.clean_message(message)
-        if not self.already_posted(cleaned_message.get("url")):
-            graph = facebook.GraphAPI(settings.FACEBOOK.get('token'))
+        graph = facebook.GraphAPI(settings.FACEBOOK.get('token'))
 
-            logger.debug('Posting to Facebook')
-            graph.put_wall_post(message=cleaned_message.get("message"), attachment={'link': cleaned_message.get("url")})
+        logger.debug('Posting to Facebook')
+        graph.put_wall_post(message=cleaned_message.get("message"), attachment={'link': cleaned_message.get("url")})
 
-            logger.debug('Refreshing Facebook access token')
-            graph.extend_access_token(app_id=settings.FACEBOOK.get('app_id'),
-                                      app_secret=settings.FACEBOOK.get('app_secret'))
-            self.save_message(cleaned_message)
-        else:
-            logger.info("url %s already on facebook" % cleaned_message.get("url"))
+        logger.debug('Refreshing Facebook access token')
+        graph.extend_access_token(app_id=settings.FACEBOOK.get('app_id'),
+                                  app_secret=settings.FACEBOOK.get('app_secret'))
 
 
 class Twitter(SocialNetwork):
     def post(self, message):
         cleaned_message = self.clean_message(message)
-        if not self.already_posted(cleaned_message.get("url")):
-            self.auth = tweepy.OAuthHandler(settings.TWITTER.get('consumer_key'),
-                                            settings.TWITTER.get('consumer_secret'))
-            self.auth.set_access_token(settings.TWITTER.get('access_token'),
-                                       settings.TWITTER.get('access_token_secret'))
+        self.auth = tweepy.OAuthHandler(settings.TWITTER.get('consumer_key'),
+                                        settings.TWITTER.get('consumer_secret'))
+        self.auth.set_access_token(settings.TWITTER.get('access_token'),
+                                   settings.TWITTER.get('access_token_secret'))
 
-            self.api = tweepy.API(self.auth)
+        self.api = tweepy.API(self.auth)
 
-            logger.debug('Posting to Twitter')
-            self.api.update_status(status=cleaned_message.get("message"))
+        logger.debug('Posting to Twitter')
+        self.api.update_status(status=cleaned_message.get("message"))
 
-            self.save_message(cleaned_message)
-        else:
-            logger.info("url %s already on twitter" % cleaned_message.get("url"))
+        self.save_message(cleaned_message)
