@@ -16,6 +16,7 @@ SLACK = {
     'token': get_secret(api='slack', secret='token')
 }
 
+# For extended token see: http://stackoverflow.com/a/10468673
 FACEBOOK = {
     'token': get_secret(api='facebook', secret='token'),
     'app_id': get_secret(api='facebook', secret='app_id'),

@@ -52,7 +52,7 @@ class Robotson():
 
             message = message.strip()
 
-            # self.facebook.post(message)
+            self.facebook.post(message)
             self.twitter.post(message)
         except Exception:
             pass
