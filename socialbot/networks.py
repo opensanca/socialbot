@@ -63,7 +63,7 @@ class Facebook(SocialNetwork):
 
 class Twitter(SocialNetwork):
     def post(self, message):
-        cleaned_message = self.clean_message(message).get("message")
+        cleaned_message = self.clean_message(message)
         if not self.already_posted(cleaned_message.get("url")):
             self.auth = tweepy.OAuthHandler(settings.TWITTER.get('consumer_key'),
                                             settings.TWITTER.get('consumer_secret'))
@@ -73,7 +73,7 @@ class Twitter(SocialNetwork):
             self.api = tweepy.API(self.auth)
 
             logger.debug('Posting to Twitter')
-            self.api.update_status(status=cleaned_message)
+            self.api.update_status(status=cleaned_message.get("message"))
 
             self.save_message(cleaned_message)
         else:

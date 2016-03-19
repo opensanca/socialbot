@@ -44,7 +44,14 @@ class Robotson():
 
     def share(self, message):
         try:
-            message = message.replace(settings.SHARE_TRIGGER, '').replace(':', '').strip()
+            match_share_trigger = re.search(r'@share[\:]', message)
+            message = message.replace(match_share_trigger.group(), "")
+
+            match_lt_mt = re.search(r'[<]+(.*)[>]+', message)
+            message = message.replace(match_lt_mt.group(0), match_lt_mt.group(1))
+
+            message = message.strip()
+
             # self.facebook.post(message)
             self.twitter.post(message)
         except Exception:
