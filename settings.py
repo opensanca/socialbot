@@ -38,5 +38,6 @@ MONGO = {
 }
 
 BOT_NAME = "robotson_v2"
+BOT_UID = "U09DUBWC9"
 
 SHARE_TRIGGER = "@share"

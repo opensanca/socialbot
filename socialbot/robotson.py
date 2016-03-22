@@ -34,7 +34,8 @@ class Robotson():
                             bot_mention = match.group() if match else ""
 
                             if bot_mention:
-                                if self.username_as_str(bot_mention) == settings.BOT_NAME:
+                                # TODO: Remove hardcoding
+                                if settings.BOT_UID in bot_mention:
                                     self.talk(channel, sender, message)
                             elif settings.SHARE_TRIGGER in message.lower():
                                 self.share(message)
