@@ -59,7 +59,7 @@ class Robotson():
             if len(url) > 0:
                 if not self.network.already_posted(url[0]):
                     self.facebook.post(message)
-                    self.twitter.post(message)
+                    # self.twitter.post(message)
                     self.network.save_message(message)
         except Exception:
             pass
